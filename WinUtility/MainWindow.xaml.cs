@@ -9,12 +9,6 @@ using System.Net;
 
 namespace WinUtility
 {
-
-    // ======================== Mess ====================================================
-
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -24,90 +18,34 @@ namespace WinUtility
 
         private void CurrentClip_Click(object sender, RoutedEventArgs e)
         {
-            this.CurrentClip.Content = "Current ClipBoard: " + Clipboard.GetText();
-            this.CurrentClip.Background = Brushes.Honeydew;
-        }
-
-        private String apiEndpoint = "https://pwot5ufm9b.execute-api.us-east-2.amazonaws.com/POC/clips";
-        static HttpClient httpClient = new();
-
-        static async Task<Response> GetRequestJsonObj(string path)
-        {
-            Response responseObj = null;
-            String rawResponse;
-
-            var requestObj = new JsonObj
-            {
-                CRUD = "GET",
-                clip = new Clip {
-                    //ClipID = "FlutterTest",
-                    ClipID = "WIP_MobilePhone",
-                    ContentList = null,
-                }
-            };
-
-            var stringRequestObj = await Task.Run(() => JsonConvert.SerializeObject(requestObj));
-
-            HttpContent httpContent = new StringContent(stringRequestObj);
-
-            HttpResponseMessage response = await httpClient.PostAsync(path, httpContent);
-            if (response.IsSuccessStatusCode)
-            {
-                rawResponse = await response.Content.ReadAsStringAsync();
-                responseObj = JsonConvert.DeserializeObject<Response>(rawResponse);
-            }
-            return responseObj;
+            this.CurrentClip.Text = Clipboard.GetText();
+            this.CurrentClipParent.Background = Brushes.Honeydew;
         }
 
         private async void PullClip_Click(object sender, RoutedEventArgs e)
         {
+            // Clear previous state, next step takes a bit of time
+            this.PullClip.Text = "Pulling From Cloud";
+            this.PullClipParent.Background = Brushes.White;
+
             // Call API to get content
-            var responseObj = await GetRequestJsonObj(apiEndpoint);
-            String cloudContent;
-            responseObj.item.Content.TryGetValue("S", out cloudContent);
+            var responseObj = await HttpHandler.GetRequestJsonObj();
+            responseObj.item.Content.TryGetValue("S", out string cloudContent);
+            Clipboard.SetText(cloudContent);
 
             // Display status update
-            this.PullClip.Content = "Pull From Cloud\nContent: " + cloudContent;
-            this.PullClip.Background = Brushes.PaleVioletRed;
-        }
-
-        static async Task<int> PostRequestJsonObj(String path, JsonObj requestObj)
-        {
-
-            var stringRequestObj = await Task.Run(() => JsonConvert.SerializeObject(requestObj));
-
-            HttpContent httpContent = new StringContent(stringRequestObj);
-
-            HttpResponseMessage response = await httpClient.PostAsync(path, httpContent);
-
-            return (int) response.StatusCode;
+            this.PullClip.Text = cloudContent;
+            this.PullClipParent.Background = Brushes.PaleVioletRed;
         }
 
         private async void PushClip_Click(object sender, RoutedEventArgs e)
         {
-            // Create Post Body
-            var requestObj = new JsonObj
-            {
-                CRUD = "POST",
-                clip = new Clip
-                {
-                    //ClipID = "FlutterTest",
-                    ClipID = "WIP_Windows",
-                    ContentList = new DynamoDBContent[] {
-                        new DynamoDBContent {
-                            ColumnHeader = "Content",
-                            ColumnValue = Clipboard.GetText()
-                        }
-                    }
-                }
-            };
-
             // API request
-            var responseStatusCode = await PostRequestJsonObj(apiEndpoint, requestObj);
+            var responseStatusCode = await HttpHandler.PostRequestJsonObj();
 
             // Display status update
-            this.PushClip.Content = "Push To Cloud: Status " + responseStatusCode;
-            this.PushClip.Background = Brushes.CadetBlue;
+            this.PushClip.Text = "Push To Cloud: Status " + responseStatusCode;
+            this.PushClipParent.Background = Brushes.CadetBlue;
         }
 
     }
