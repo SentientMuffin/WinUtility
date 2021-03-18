@@ -27,15 +27,14 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="80"/>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
+            <RowDefinition Height="50" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
@@ -46,44 +45,43 @@
             Grid.ColumnSpan="6">
             <materialDesign:ColorZone
                 materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                Mode="PrimaryMid"
+                Mode="Standard"
                 DockPanel.Dock="Top"
                 VerticalAlignment="Stretch">
                 <TextBlock
                     FontSize="28"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center">
-                    Hello World :)
+                    Clip Stream
                 </TextBlock>
             </materialDesign:ColorZone>
         </DockPanel>
 
         <UniformGrid
-            Columns="1"
-            Grid.Row="1" Grid.RowSpan="3"
-            VerticalAlignment="Stretch" Height="auto">
+            Columns="2" Grid.Row="1" Grid.ColumnSpan="4"
+            VerticalAlignment="Center" MaxHeight="50">
             <Button
+                x:Name="RegisterDevices"
+                Click="RegisterDevices_Click"
                 Style="{StaticResource MaterialDesignRaisedButton}"
-                FontSize="10" MinHeight="100" Margin="5,0,0,0">
+                FontSize="16" MaxWidth="200" Margin="5,0,0,0">
                 <TextBlock>
-                    Register
-                    <LineBreak />
-                    Devices
+                    Register Devices
                 </TextBlock>
             </Button>
             <Button
+                x:Name="ClipHistory"
+                Click="ClipHistory_Click"
                 Style="{StaticResource MaterialDesignRaisedButton}"
-                FontSize="10" MinHeight="100" Margin="5,0,0,0">
+                FontSize="16" MaxWidth="200" Margin="5,0,0,0">
                 <TextBlock>
-                    Clip
-                    <LineBreak />
-                    History
+                    Clip History
                 </TextBlock>
             </Button>
         </UniformGrid>
         
         <Button 
-            Grid.Row="1" Grid.Column="1"
+            Grid.Row="2" Grid.Column="0"
             Click="CurrentClip_Click" 
             Style="{StaticResource MaterialDesignRaisedAccentButton}"
             Height="auto"
@@ -96,20 +94,23 @@
         </Button>
         <materialDesign:Card
             x:Name="CurrentClipParent"
-            Grid.Row="1" Grid.Column="2"
-            Grid.ColumnSpan="4"
+            Grid.Row="2" Grid.Column="1"
+            Grid.ColumnSpan="3"
             Height="auto"
             HorizontalAlignment="Stretch"
-            Margin="20" Padding="10">
-            <TextBlock 
-                x:Name="CurrentClip"
-                FontSize="16" 
-                TextAlignment="Center"
-                VerticalAlignment="Center" />
+            Margin="20" Padding="0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <TextBlock 
+                    x:Name="CurrentClip"
+                    FontSize="16" 
+                    TextAlignment="Left"
+                    Margin="10,0,0,0"
+                    VerticalAlignment="Center" />
+            </ScrollViewer>
         </materialDesign:Card>
 
         <Button
-            Grid.Row = "2" Grid.Column="1"
+            Grid.Row = "3" Grid.Column="0"
             Click="PullClip_Click" 
             Height="auto"
             Style="{StaticResource MaterialDesignRaisedAccentButton}"
@@ -122,19 +123,22 @@
         </Button>
         <materialDesign:Card
             x:Name="PullClipParent"
-            Grid.Row="2" Grid.Column="2"
-            Grid.ColumnSpan="4"
+            Grid.Row="3" Grid.Column="1"
+            Grid.ColumnSpan="3"
             Height="auto"
             HorizontalAlignment="Stretch"
-            Margin="20" Padding="10">
-            <TextBlock 
-                x:Name="PullClip"
-                FontSize="16" 
-                TextAlignment="Center"
-                VerticalAlignment="Center" />
+            Margin="20" Padding="0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <TextBlock 
+                    x:Name="PullClip"
+                    FontSize="16" 
+                    TextAlignment="Left"
+                    Margin="10,0,0,0"
+                    VerticalAlignment="Center" />
+            </ScrollViewer>
         </materialDesign:Card>
         <Button 
-            Grid.Row= "3" Grid.Column="1" 
+            Grid.Row= "4" Grid.Column="0" 
             Click="PushClip_Click" 
             Height="auto"
             Style="{StaticResource MaterialDesignRaisedAccentButton}"
@@ -148,16 +152,19 @@
 
         <materialDesign:Card
             x:Name="PushClipParent"
-            Grid.Row="3" Grid.Column="2"
-            Grid.ColumnSpan="4"
+            Grid.Row="4" Grid.Column="1"
+            Grid.ColumnSpan="3"
             Height="auto"
             HorizontalAlignment="Stretch"
-            Margin="20" Padding="10">
-            <TextBlock 
-                x:Name="PushClip"
-                FontSize="16" 
-                TextAlignment="Center"
-                VerticalAlignment="Center" />
+            Margin="20">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <TextBlock 
+                    x:Name="PushClip"
+                    FontSize="16" 
+                    TextAlignment="Left"
+                    Margin="10,0,0,0"
+                    VerticalAlignment="Center" />
+            </ScrollViewer>
         </materialDesign:Card>
     </Grid>
 

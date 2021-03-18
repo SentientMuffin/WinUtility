@@ -48,6 +48,15 @@ namespace WinUtility
             this.PushClipParent.Background = Brushes.CadetBlue;
         }
 
+        private void RegisterDevices_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ClipHistory_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
 }
